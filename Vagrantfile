@@ -37,6 +37,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         v.vmx["numvcpus"] = "2"
     end
 
+    infra1_config.vm.provider :libvirt do |v|
+        v.memory = "4096"
+        v.cpus = "2"
+        v.nested = true
+    end
+
     infra1_config.vm.provider "virtualbox" do |v|
         v.customize ["modifyvm", :id, "--memory", "4096"]
         v.customize ["modifyvm", :id, "--cpus", "2"]
@@ -68,6 +74,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         v.vmx["numvcpus"] = "1"
     end
 
+    logging1_config.vm.provider :libvirt do |v|
+        v.memory = "1024"
+        v.cpus = "1"
+        v.nested = true
+    end
+
     logging1_config.vm.provider "virtualbox" do |v|
         v.customize ["modifyvm", :id, "--memory", "1024"]
         v.customize ["modifyvm", :id, "--cpus", "1"]
@@ -97,6 +109,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     compute1_config.vm.provider "vmware_fusion" do |v|
         v.vmx["memsize"] = "2048"
         v.vmx["numvcpus"] = "2"
+    end
+
+    compute1_config.vm.provider :libvirt do |v|
+        v.memory = "2048"
+        v.cpus = "2"
+        v.nested = true
     end
 
     compute1_config.vm.provider "virtualbox" do |v|

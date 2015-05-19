@@ -3,6 +3,9 @@
 - name: Copy public key to host
   copy: src=id_rsa.pub dest=/usr/share mode=0755
 
+- name: Creates directory
+  file: path=/root/.ssh state=directory
+
 - name: Insert key into authorized keys file
   shell: chdir=/root/.ssh cat /usr/share/id_rsa.pub >> /root/.ssh/authorized_keys
   
