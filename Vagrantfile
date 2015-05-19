@@ -12,9 +12,14 @@ cat << EOF >> /etc/hosts
 EOF
 SCRIPT
 
+$proxy = <<SCRIPT
+echo 'Acquire::http { Proxy "http://10.64.200.100:3142"; };' > /etc/apt/apt.conf.d/10mirror
+SCRIPT
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box = "trusty64"
+  config.cache.enable :apt
 
   # Turn off shared folders
   config.vm.synced_folder ".", "/vagrant", id: "vagrant-root", disabled: true
@@ -24,6 +29,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     infra1_config.vm.hostname = "021579-infra01"
 
     infra1_config.vm.provision "shell", inline: $script
+    infra1_config.vm.provision "shell", inline: $proxy
 
     # eth1
     infra1_config.vm.network "private_network", ip: "172.29.236.2"
@@ -61,6 +67,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     logging1_config.vm.hostname = "021579-logging01"
 
     logging1_config.vm.provision "shell", inline: $script
+    logging1_config.vm.provision "shell", inline: $proxy
 
     # eth1
     logging1_config.vm.network "private_network", ip: "172.29.236.5"
@@ -98,6 +105,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     compute1_config.vm.hostname = "021579-compute001"
 
     compute1_config.vm.provision "shell", inline: $script
+    compute1_config.vm.provision "shell", inline: $proxy
 
     # eth1
     compute1_config.vm.network "private_network", ip: "172.29.236.10"
